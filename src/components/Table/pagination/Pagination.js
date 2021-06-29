@@ -20,5 +20,4 @@ export default function Pagination({ itemsPerPage, totalItems, paginate }) {
             </ul>
         </nav>
     )
-
 }

@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import useSortableData from '../../useSortableData';
-import Pagination from './Pagination';
+import Pagination from './pagination/Pagination';
+import './table.css'
 
-export default function Table() {
-    const users = useSelector(state => state.users);
+export default function Table({ data }) {
+
     const [text, setText] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [itemsPerPage, setItemsPerPage] = useState(5);
 
-    const { items, requestSort } = useSortableData(users);
+    const { items, requestSort } = useSortableData(data);
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -73,6 +74,8 @@ export default function Table() {
                 : <h1>
                     No data :(
                 </h1>}
+            <h1>{itemsPerPage} items displayed each page</h1>
+            <h1>Max amount of items available: {items.length}</h1>
         </div>
     )
 }
