@@ -10,12 +10,12 @@ export default function Home() {
                 <li>
                     <Link
                         className="active"
-                        to="/Page1">
+                        to="/page1">
                         Page1
                     </Link>
                     <Link
                         className="active"
-                        to="/Page2">
+                        to="/page2">
                         Page2
                     </Link>
                 </li>

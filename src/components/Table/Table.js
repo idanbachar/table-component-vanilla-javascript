@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 
 export default function Table() {
 
     const users = useSelector(state => state.users);
+    const [text, setText] = useState('');
 
     const TableHeader = () => {
         return (Object.keys(users[0]).map(attr =>
@@ -14,7 +15,12 @@ export default function Table() {
     }
 
     const TableRows = () => {
-        return users.map(user => {
+        return users.filter((user) => {
+            const stringifyRow = JSON.stringify(user);
+            if (text === "") return user;
+            if (stringifyRow.toLowerCase().includes(text.toLowerCase()))
+                return user;
+        }).map(user => {
             return (
                 <tr key={user.id}>
                     <td>{user.userId}</td>
@@ -28,8 +34,16 @@ export default function Table() {
 
     return (
         <div>
+            Search:
+            <input type="text"
+                onChange={(e) => setText(e.target.value)}
+            />
+
+            <h2>
+                {text}
+            </h2>
             {users.length > 0 ?
-                <table >
+                <table>
                     <thead>
                         <tr>
                             <TableHeader />
@@ -39,7 +53,9 @@ export default function Table() {
                         <TableRows />
                     </tbody>
                 </table>
-                : null}
+                : <h1>
+                    No data :(
+                </h1>}
         </div>
     )
 }

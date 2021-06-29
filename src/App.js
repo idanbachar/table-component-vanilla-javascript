@@ -29,13 +29,13 @@ export default function App() {
 
   return (
     <div className="App">
- 
+
       <Router>
         <Switch>
-          <Route path="/Home" component={Home} exact />
+          <Route path="/home" component={Home} exact />
           <Route path="/" component={Home} exact />
-          <Route path="/Page1" component={Page1} exact />
-          <Route path="/Page2" component={Page2} exact />
+          <Route path="/page1" component={Page1} exact />
+          <Route path="/page2" component={Page2} exact />
         </Switch>
       </Router>
     </div>
