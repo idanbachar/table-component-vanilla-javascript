@@ -1,32 +1,36 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
+import useSortableData from '../../useSortableData';
 
 export default function Table() {
-
     const users = useSelector(state => state.users);
     const [text, setText] = useState('');
 
+    const { items, requestSort } = useSortableData(users);
+
     const TableHeader = () => {
-        return (Object.keys(users[0]).map(attr =>
+        return (Object.keys(items[0]).map(attr =>
             <th key={attr}>
-                {attr.toUpperCase()}
+                <button onClick={() => requestSort(attr)}>
+                    {attr.toUpperCase()}
+                </button>
             </th>
         ))
     }
 
     const TableRows = () => {
-        return users.filter((user) => {
-            const stringifyRow = JSON.stringify(user);
-            if (text === "") return user;
+        return items.filter((item) => {
+            const stringifyRow = JSON.stringify(item);
+            if (text === "") return item;
             if (stringifyRow.toLowerCase().includes(text.toLowerCase()))
-                return user;
-        }).map(user => {
+                return item;
+        }).map(item => {
             return (
-                <tr key={user.id}>
-                    <td>{user.userId}</td>
-                    <td>{user.id}</td>
-                    <td>{user.title}</td>
-                    <td>{user.body}</td>
+                <tr key={item.id}>
+                    <td>{item.userId}</td>
+                    <td>{item.id}</td>
+                    <td>{item.title}</td>
+                    <td>{item.body}</td>
                 </tr>
             )
         })
@@ -38,11 +42,12 @@ export default function Table() {
             <input type="text"
                 onChange={(e) => setText(e.target.value)}
             />
+            <select>
+                <option>Live filtering</option>
+                <option>api filtering</option>
+            </select>
 
-            <h2>
-                {text}
-            </h2>
-            {users.length > 0 ?
+            {items.length > 0 ?
                 <table>
                     <thead>
                         <tr>
