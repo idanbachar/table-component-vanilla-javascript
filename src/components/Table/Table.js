@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux';
 import useSortableData from '../../useSortableData';
 import Pagination from './pagination/Pagination';
 import './table.css'
 
 export default function Table({ data }) {
 
-    const [text, setText] = useState('');
+    const [searchFilter, setSearchFilter] = useState('');
+    const [searchFunctionality, setSearchFunctionality] = useState("live");
+
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(5);
 
@@ -16,7 +18,9 @@ export default function Table({ data }) {
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
 
-    const paginate = (pageNumber) => setCurrentPage(pageNumber)
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const dispatch = useDispatch();
 
     const TableHeader = () => {
         return (Object.keys(currentItems[0]).map(attr =>
@@ -28,13 +32,19 @@ export default function Table({ data }) {
         ))
     }
 
+    const liveSearchFilter = () => {
+        if (searchFunctionality === 'live') {
+            return currentItems.filter((item) => {
+                const stringifyRow = JSON.stringify(item);
+                if (searchFilter === "") return item;
+                if (stringifyRow.toLowerCase().includes(searchFilter.toLowerCase()))
+                    return item;
+            })
+        }
+        return currentItems;
+    }
     const TableRows = () => {
-        return currentItems.filter((item) => {
-            const stringifyRow = JSON.stringify(item);
-            if (text === "") return item;
-            if (stringifyRow.toLowerCase().includes(text.toLowerCase()))
-                return item;
-        }).map(item => {
+        return liveSearchFilter().map(item => {
             return (
                 <tr key={item.id}>
                     <td>{item.userId}</td>
@@ -46,16 +56,35 @@ export default function Table({ data }) {
         })
     }
 
+    const tryFetchApiData = () => {
+        dispatch({
+            type: 'GET',
+            payload: searchFilter
+        })
+    }
+
+    const ApiButtonFilter = () => {
+        return (
+            <button onClick={tryFetchApiData}>
+                Fetch api
+            </button>
+        )
+    }
+
     return (
         <div>
             Search:
             <input type="text"
-                onChange={(e) => setText(e.target.value)}
+                onChange={(e) => setSearchFilter(e.target.value)}
             />
-            <select>
-                <option>Live filtering</option>
-                <option>api filtering</option>
+            <select onChange={(e) => setSearchFunctionality(e.target.value)}>
+                <option value="live">Live filtering</option>
+                <option value="api">api filtering</option>
             </select>
+
+            {searchFunctionality !== 'live' ?
+                <ApiButtonFilter />
+                : null}
 
             {currentItems.length > 0 ?
                 <div>
@@ -72,10 +101,11 @@ export default function Table({ data }) {
                     <Pagination itemsPerPage={itemsPerPage} totalItems={items.length} paginate={paginate} />
                 </div>
                 : <h1>
-                    No data :(
+                    No data received :(
                 </h1>}
-            <h1>{itemsPerPage} items displayed each page</h1>
-            <h1>Max amount of items available: {items.length}</h1>
+            <h3>Current page: {`${currentPage}/${items.length / itemsPerPage}`}</h3>
+            <h3>{itemsPerPage} items displayed each page</h3>
+            <h3>Max amount of items available: {items.length}</h3>
         </div>
     )
 }
