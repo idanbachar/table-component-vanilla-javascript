@@ -5,12 +5,13 @@ import Table from '../../components/Table/Table';
 
 export default function Page1() {
 
-    const users = useSelector(state => state.users);
+    const data = useSelector(state => state.data);
 
     return (
         <div>
+            <h1>Page 1 displays data fetched from sever:</h1>
             <Table
-                data={users}
+                data={data}
             />
         </div>
     )

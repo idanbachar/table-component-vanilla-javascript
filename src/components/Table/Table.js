@@ -73,6 +73,17 @@ export default function Table({ data }) {
 
     return (
         <div>
+            {searchFunctionality !== 'live' ?
+                <p style={{ color: 'red' }}>
+                    (To use fetch, write the route you want.
+                    <br />
+                    for exam: the default parameter is <b>posts</b>.
+                    <br />
+                    You can try 'albums' / 'todos'
+                    )
+                </p>
+                : null}
+
             Search:
             <input type="text"
                 onChange={(e) => setSearchFilter(e.target.value)}

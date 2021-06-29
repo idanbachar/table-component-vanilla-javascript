@@ -1,6 +1,6 @@
 const initialState = 'posts';
 
-const fetchReducer = (state = initialState, action) => {
+const FetchReducer = (state = initialState, action) => {
 
     switch (action.type) {
         case 'GET':
@@ -12,4 +12,4 @@ const fetchReducer = (state = initialState, action) => {
     }
 }
 
-export default fetchReducer;
+export default FetchReducer;

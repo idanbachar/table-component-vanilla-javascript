@@ -1,6 +1,6 @@
 const initialState = [];
 
-const UserReducer = (state = initialState, action) => {
+const DataReducer = (state = initialState, action) => {
 
     switch (action.type) {
         case 'INIT':
@@ -10,4 +10,4 @@ const UserReducer = (state = initialState, action) => {
     }
 }
 
-export default UserReducer;
+export default DataReducer;
