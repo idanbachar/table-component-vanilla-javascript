@@ -4,7 +4,7 @@ const UserReducer = (state = initialState, action) => {
 
     switch (action.type) {
         case 'INIT':
-            return state;
+            return action.payload;
         default:
             return state;
     }

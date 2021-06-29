@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Home from './pages/Home';
+import Home from './pages/home/Home';
+import Page1 from './pages/page1/Page1';
+import Page2 from './pages/page2/Page2';
 import './App.css';
 
 export default function App() {
@@ -27,23 +29,15 @@ export default function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <Router>
-          <div>
-            <nav>
-              <ul>
-                <li>
-                  <Link to="/home">Home</Link>
-                </li>
-              </ul>
-            </nav>
-            <Switch>
-              <Route path="/home" component={Home} exact />
-              <Route path="/" component={Home} exact />
-            </Switch>
-          </div>
-        </Router>
-      </header>
+ 
+      <Router>
+        <Switch>
+          <Route path="/Home" component={Home} exact />
+          <Route path="/" component={Home} exact />
+          <Route path="/Page1" component={Page1} exact />
+          <Route path="/Page2" component={Page2} exact />
+        </Switch>
+      </Router>
     </div>
   );
 }
